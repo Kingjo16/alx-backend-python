@@ -26,12 +26,13 @@ class TestGithubOrgClient(unittest.TestCase):
     @patch(
         "client.get_json",
     )
-    def test_org(self, org_name: str, expected_response: Dict, mocked_get_json: MagicMock) -> None:
+    def test_org(self, org_name: str, expected_response: Dict,
+                 mocked_ge_json: MagicMock) -> None:
         """Check the Tests of the `org` method."""
-        mocked_get_json.return_value = MagicMock(return_value=expected_response)
+        mocked_ge_json.return_value = MagicMock(return_value=expected_response)
         gh_org_client = GithubOrgClient(org_name)
         self.assertEqual(gh_org_client.org(), expected_response)
-        mocked_get_json.assert_called_once_with(
+        mocked_ge_json.assert_called_once_with(
             "https://api.github.com/orgs/{}".format(org_name)
         )
 
@@ -109,7 +110,8 @@ class TestGithubOrgClient(unittest.TestCase):
         ({'license': {'key': "bsd-3-clause"}}, "bsd-3-clause", True),
         ({'license': {'key': "bsl-1.0"}}, "bsd-3-clause", False),
     ])
-    def test_has_license(self, repo_info: Dict, license_key: str, expected_result: bool) -> None:
+    def test_has_license(self, repo_info: Dict,
+                         license_key: str, expected_result: bool) -> None:
         """Tests the `has_license` method."""
         gh_org_client = GithubOrgClient("google")
         has_license = gh_org_client.has_license(repo_info, license_key)
